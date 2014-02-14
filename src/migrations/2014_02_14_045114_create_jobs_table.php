@@ -20,6 +20,8 @@ class CreateJobsTable extends Migration {
   {
     Schema::create($this->table, function($table)
     {
+      $table->engine = 'InnoDB';
+
       $table->increments('id');
       $table->string('queue');
       $table->text('payload');

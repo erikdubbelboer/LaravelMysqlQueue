@@ -1,5 +1,5 @@
 {
-  "name": "ErikDubbelboer/laravel-mysql-queue",
+  "name": "ErikDubbelboer/LaravelMysqlQueue",
   "description": "Mysql driver for the Laravel Job Queue.",
   "keywords": ["laravel", "driver", "mysql", "job", "queue"],
   "license": "MIT",

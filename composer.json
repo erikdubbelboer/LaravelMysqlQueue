@@ -1,0 +1,17 @@
+{
+  "name": "ErikDubbelboer/laravel-mysql-queue",
+  "description": "Mysql driver for the Laravel Job Queue.",
+  "keywords": ["laravel", "driver", "mysql", "job", "queue"],
+  "license": "MIT",
+  "require": {
+  },
+  "autoload": {
+    "classmap": [
+      "src/migrations"
+    ],
+    "psr-0": {
+      "ErikDubbelboer\\LaravelMysqlQueue\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}

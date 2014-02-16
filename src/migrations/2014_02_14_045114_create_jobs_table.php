@@ -23,12 +23,12 @@ class CreateJobsTable extends Migration {
       $table->engine = 'InnoDB';
 
       $table->increments('id');
-      $table->string('queue');
+      $table->string('queue', 255);
       $table->text('payload');
       $table->integer('created_at')->unsigned();
       $table->integer('updated_at')->unsigned();
       $table->integer('run_after')->unsigned();
-      $table->enum('status', array('WAITING', 'RUNNING'));
+      $table->enum('status', array('WAITING', 'RUNNING', 'DONE'));
 
       $table->index(array('queue', 'run_after', 'status'));
     });

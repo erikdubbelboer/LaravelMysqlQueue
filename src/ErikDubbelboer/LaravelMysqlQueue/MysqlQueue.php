@@ -142,7 +142,7 @@ class MysqlQueue extends \Illuminate\Queue\Queue implements \Illuminate\Queue\Qu
       SELECT id, payload
       FROM ' . $this->table . '
       WHERE queue = ?
-        AND run_after < UNIX_TIMESTAMP()
+        AND run_after <= UNIX_TIMESTAMP()
         AND status = "WAITING"
       ORDER BY run_after ASC
       LIMIT 1
@@ -152,12 +152,13 @@ class MysqlQueue extends \Illuminate\Queue\Queue implements \Illuminate\Queue\Qu
     ));
 
     if (empty($job)) {
-      DB::commit();
+      $this->connection->commit();
 
       return null;
     }
 
-    $id = $this->getMeta($job['payload'], 'id');
+    $id      = $job[0]->id;
+    $payload = $this->setMeta($job[0]->payload, 'id', $id);
 
     $this->connection->update('
       UPDATE ' . $this->table . '
@@ -170,7 +171,7 @@ class MysqlQueue extends \Illuminate\Queue\Queue implements \Illuminate\Queue\Qu
 
     $this->connection->commit();
 
-    return new MysqlJob($this->container, $this, $job['payload'], $queue);
+    return new MysqlJob($this->container, $this, $payload, $queue);
   }
 
   /**
@@ -181,8 +182,17 @@ class MysqlQueue extends \Illuminate\Queue\Queue implements \Illuminate\Queue\Qu
   public function delete($payload) {
     $id = $this->getMeta($payload, 'id');
 
-    $this->connection->delete('
+    /*$this->connection->delete('
       DELETE FROM ' . $this->table . '
+      WHERE id = ?
+    ', array(
+      $id
+    ));*/
+
+    $this->connection->update('
+      UPDATE ' . $this->table . '
+      SET updated_at = UNIX_TIMESTAMP(),
+          status     = "DONE"
       WHERE id = ?
     ', array(
       $id

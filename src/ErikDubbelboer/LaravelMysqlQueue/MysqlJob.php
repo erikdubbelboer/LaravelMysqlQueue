@@ -29,8 +29,7 @@ class MysqlJob extends \Illuminate\Queue\Jobs\Job {
   /**
    * @inheritdoc
    */
-  public function fire()
-  {
+  public function fire() {
     $this->resolveAndFire(json_decode($this->payload, true));
   }
 
@@ -60,9 +59,7 @@ class MysqlJob extends \Illuminate\Queue\Jobs\Job {
    * @return void
    */
   public function release($delay = 0) {
-    $this->delete();
-
-    $this->mysqlQueue->release($this->queue, $this->job, $delay, $this->attempts() + 1);
+    $this->mysqlQueue->release($this->queue, $this->payload, $delay, $this->attempts() + 1);
   }
 
   /**

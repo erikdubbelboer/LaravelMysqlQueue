@@ -6,16 +6,11 @@ namespace ErikDubbelboer\LaravelMysqlQueue;
 class LaravelMysqlQueueServiceProvider extends \Illuminate\Support\ServiceProvider {
 
   /**
-   * Indicates if loading of the provider is deferred.
+   * Register the service provider.
    *
-   * @var bool
+   * @return void
    */
-  protected $defer = true;
-
-  /**
-   * @inheritdoc
-   */
-  public function boot() {
+  public function register() {
     $this->app->resolving('queue', function($manager) {
       $manager->addConnector('mysql', function() {
         return new MysqlConnector();
@@ -23,13 +18,6 @@ class LaravelMysqlQueueServiceProvider extends \Illuminate\Support\ServiceProvid
 
       return $manager;
     });
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function register() {
-    // Do nothing.
   }
 
 }
